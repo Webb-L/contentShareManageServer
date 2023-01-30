@@ -1,0 +1,15 @@
+GET http://{{hostname}}/device
+Accept: application/json
+
+###
+
+POST http://{{hostname}}/device
+Content-Type: application/json
+
+{
+  "name": "132131",
+  "password": "13213131231",
+  "type": 1
+}
+
+###
