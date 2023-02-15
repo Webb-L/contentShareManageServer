@@ -1,0 +1,70 @@
+# 获取所有内容
+GET http://{{hostname}}/content?password={{password}}
+Token: {{token}}
+Accept: application/json
+
+###
+
+# 查询某个设备所有内容
+GET http://{{hostname}}/content?deviceName=安卓&password={{password}}
+Token: {{token}}
+Accept: application/json
+
+###
+
+# 限制查询数量
+GET http://{{hostname}}/content?start=0&end=30&password={{password}}
+Token: {{token}}
+Accept: application/json
+
+###
+
+# 添加内容
+POST http://{{hostname}}/content/?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+{
+  "type": 1,
+  "text": "Hello World!"
+}
+
+###
+
+# 添加内容2
+POST http://{{hostname}}/content/?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+{
+  "type": 2,
+  "text": "----Hello World!"
+}
+
+###
+
+# 根据id查询内容
+GET http://{{hostname}}/content/{{contentId}}?password={{password}}
+Accept: application/json
+
+###
+
+
+# 更新内容
+PUT http://{{hostname}}/content/{{contentId}}?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+{
+  "type": 1,
+  "text": "【update】Hello World!"
+}
+
+###
+
+# 删除内容
+DELETE http://{{hostname}}/content/{{contentId}}?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+###
