@@ -1,15 +1,101 @@
-GET http://{{hostname}}/device
+# 获取所有设备
+GET http://{{hostname}}/device?password={{password}}
 Accept: application/json
 
 ###
 
-POST http://{{hostname}}/device
+# 根据范围获取所有设备
+GET http://{{hostname}}/device?start=0&end=10&password={{password}}
+Accept: application/json
+
+###
+
+# 添加第一台设备
+POST http://{{hostname}}/device?password={{password}}
 Content-Type: application/json
 
 {
-  "name": "132131",
-  "password": "13213131231",
+  "name": "安卓",
+  "password": "123456",
   "type": 1
+}
+
+###
+
+# 添加第二台设备
+POST http://{{hostname}}/device?password={{password}}
+Content-Type: application/json
+
+{
+  "name": "安卓1",
+  "password": "654321",
+  "type": 2
+}
+
+###
+
+# 添加重复设备
+POST http://{{hostname}}/device?password={{password}}
+Content-Type: application/json
+
+{
+  "name": "安卓",
+  "password": "123456",
+  "type": 1
+}
+
+###
+
+# 查询存在设备
+GET http://{{hostname}}/device/安卓?password={{password}}
+Accept: application/json
+
+###
+# 查询不存在设备
+GET http://{{hostname}}/device/安卓0?password={{password}}
+Accept: application/json
+
+###
+
+# 删除存在设备
+DELETE http://{{hostname}}/device/安卓?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+###
+# 删除不存在设备
+DELETE http://{{hostname}}/device/安卓0?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+###
+
+# 更新存在设备
+PUT http://{{hostname}}/device/安卓1?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+{
+  "Password": "123131",
+  "Type": 1,
+  "IsAdmin": false,
+  "IsRead": true,
+  "IsSend": true
+}
+
+###
+
+# 更新不存在设备
+PUT http://{{hostname}}/device/安卓0?password={{password}}
+Token: {{token}}
+Content-Type: application/json
+
+{
+  "Password": "123131",
+  "Type": 1,
+  "IsAdmin": false,
+  "IsRead": true,
+  "IsSend": true
 }
 
 ###
