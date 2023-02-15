@@ -6,4 +6,6 @@ import (
 
 func RegisterRouter(r *gin.Engine) {
 	InitDeviceRouter(r)
+	InitContentRouter(r)
+	InitSettingRouter(r)
 }
