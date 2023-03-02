@@ -41,7 +41,6 @@ func DeviceIndex(context *gin.Context) {
 	resultDevice := make([]model.Device, 0)
 	for _, device := range devices[start:end] {
 		device.Token = ""
-		device.Password = ""
 		resultDevice = append(resultDevice, device)
 	}
 
@@ -77,7 +76,6 @@ func DeviceShow(context *gin.Context) {
 	}
 	device := tempDevice.(model.Device)
 	device.Token = ""
-	device.Password = ""
 	context.JSON(http.StatusOK, device)
 }
 
@@ -110,7 +108,7 @@ func DeviceDestroy(context *gin.Context) {
 	}
 
 	device := tempDevice.(model.Device)
-	if model.DeleteDevice(device.Name, device.Password) {
+	if model.DeleteDevice(device.Name) {
 		context.String(http.StatusOK, "删除成功！")
 	} else {
 		context.String(http.StatusNotFound, "找不到设备！")

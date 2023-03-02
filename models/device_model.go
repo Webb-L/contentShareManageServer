@@ -12,13 +12,12 @@ var devices = make([]Device, 0)
 
 // Device 设备
 type Device struct {
-	Name     string // 设备名称
-	Password string // 设备密码
-	Token    string // Token
-	Type     int    // 设备类型（Android、IOS、PC）
-	IsAdmin  bool   // 是否是管理员
-	IsRead   bool   // 是否可以查看
-	IsSend   bool   // 是否可以发送
+	Name    string // 设备名称
+	Token   string // Token
+	Type    int    // 设备类型（Android、IOS、PC）
+	IsAdmin bool   // 是否是管理员
+	IsRead  bool   // 是否可以查看
+	IsSend  bool   // 是否可以发送
 }
 
 // GetDevices @title 获取所有设备。
@@ -63,10 +62,10 @@ func QueryDevice(deviceName string) interface{} {
 // @param name string 设备名称。
 // @param password string 设备密码。
 // @return bool 返回删除状态。
-func DeleteDevice(name string, password string) bool {
+func DeleteDevice(name string) bool {
 	deleteIndex := -1
 	for index, device := range devices {
-		if device.Name == name && device.Password == password {
+		if device.Name == name {
 			deleteIndex = index
 		}
 	}
