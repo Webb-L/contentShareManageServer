@@ -10,7 +10,7 @@ import (
 func InitDeviceRouter(r *gin.Engine) {
 	deviceGroup := r.Group("/device", func(context *gin.Context) {
 		queryPassword, exists := context.GetQuery("password")
-		if !exists || queryPassword != password {
+		if password == "" || !exists || queryPassword != password {
 			context.String(http.StatusUnauthorized, "密码错误！")
 			context.Abort()
 			context.Next()

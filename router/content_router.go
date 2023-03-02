@@ -10,7 +10,7 @@ import (
 func InitContentRouter(r *gin.Engine) {
 	contentGroup := r.Group("/content", func(context *gin.Context) {
 		queryPassword, exists := context.GetQuery("password")
-		if !exists || queryPassword != password {
+		if password == "" || !exists || queryPassword != password {
 			context.String(http.StatusUnauthorized, "密码错误！")
 			context.Abort()
 			context.Next()
@@ -47,7 +47,7 @@ func InitContentRouter(r *gin.Engine) {
 			return
 		}
 
-		if context.Request.Method != "POST" {
+		if context.Request.Method != "GET" && context.Request.Method != "POST" {
 			id := context.Param("id")
 			if id == "" {
 				context.String(http.StatusNotFound, "找不到内容！")
