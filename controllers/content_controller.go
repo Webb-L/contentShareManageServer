@@ -8,7 +8,6 @@ import (
 	"strconv"
 )
 
-// ContentIndex @title 查询所有内容
 func ContentIndex(context *gin.Context) {
 	var contents []model.Content = nil
 	deviceName, exists := context.GetQuery("deviceName")
@@ -42,7 +41,6 @@ func ContentIndex(context *gin.Context) {
 	context.JSON(http.StatusOK, contents[start:end])
 }
 
-// ContentStore @title 新增内容
 func ContentStore(context *gin.Context) {
 	content := model.Content{}
 	context.BindJSON(&content)
@@ -57,7 +55,6 @@ func ContentStore(context *gin.Context) {
 	context.JSON(http.StatusOK, content)
 }
 
-// ContentShow @title 查询某个内容
 func ContentShow(context *gin.Context) {
 	fmt.Println(context.Param("id"))
 	content := model.QueryContentById(context.Param("id"))
@@ -69,7 +66,6 @@ func ContentShow(context *gin.Context) {
 	context.JSON(http.StatusOK, content)
 }
 
-// ContentUpdate @title 更新内容
 func ContentUpdate(context *gin.Context) {
 	tempContent, exists := context.Get("content")
 	if !exists {
@@ -86,7 +82,6 @@ func ContentUpdate(context *gin.Context) {
 	context.String(http.StatusOK, "更新成功！")
 }
 
-// ContentDestroy @title 删除内容
 func ContentDestroy(context *gin.Context) {
 	id := context.Param("id")
 	deviceName, exists := context.Get("deviceName")
