@@ -1,0 +1,4 @@
+GET http://{{hostname}}/settings/password
+Accept: application/json
+
+###

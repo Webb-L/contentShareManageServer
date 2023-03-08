@@ -13,7 +13,7 @@ import (
 var password = ""
 
 func InitSettingRouter(r *gin.Engine) {
-	deviceGroup := r.Group("/setting", func(context *gin.Context) {
+	deviceGroup := r.Group("/settings", func(context *gin.Context) {
 		fmt.Println(context.Request.URL.Path)
 	})
 	{
