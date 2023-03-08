@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func ContentIndex(context *gin.Context) {
@@ -51,6 +52,7 @@ func ContentStore(context *gin.Context) {
 		return
 	}
 	content.DeviceName = deviceName.(string)
+	content.CreateDate = time.Now().UnixMilli()
 	model.AddContent(content)
 	context.JSON(http.StatusOK, content)
 }

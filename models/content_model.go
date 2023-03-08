@@ -16,36 +16,27 @@ type Content struct {
 	DeviceName string // 设备名称
 	Type       int    // 内容类型（文本、HTML、JSON、XML...）
 	Text       string // 内容
+	CreateDate int64  // 创建时间
 }
 
-// GetContents @title 获取所有设备。
-// @description 获取所有的设备。
-// @return []Content 返回所有设备。
+// GetContents 获取所有设备。
 func GetContents() []Content {
 	return contents
 }
 
-// AddContent @title 添加内容。
-// @description 如果有新内容加入就添加到contents中。
-// @param content Content 新增的内容。
-// @return int 返回内容数量。
+// AddContent 如果有新内容加入就添加到contents中。
 func AddContent(content Content) int {
 	contents = append(contents, content)
 	return len(contents)
 }
 
-// BuildId @title 生成内容Id。
-// @description 根据随机数进行md5编码返回id。
-// @return string md5编码后的字符串。
+// BuildId 根据随机数进行md5编码返回id
 func BuildId() string {
 	rand.Seed(time.Now().UnixMilli())
 	return fmt.Sprintf("%x", md5.Sum([]byte(strconv.Itoa(rand.Int()+rand.Int()))))
 }
 
-// QueryContentById @title 根据id查询内容。
-// @description 根据id查询内容，如果查询成功就返回内容否则就返回空。
-// @param id 内容id。
-// @return Content|null 如果查询成功就返回内容否则就返回空。
+// QueryContentById 根据id查询内容，如果查询成功就返回内容否则就返回空。
 func QueryContentById(id string) any {
 	for _, content := range contents {
 		fmt.Println(content.Id, id, content.Id == id)
@@ -56,10 +47,7 @@ func QueryContentById(id string) any {
 	return nil
 }
 
-// QueryContentsByDeviceName @title 根据设备名查询内容。
-// @description 根据设备名查询内容返回内容数组。
-// @param deviceName string 设备名。
-// @return []Content 内容数组。
+// QueryContentsByDeviceName 根据设备名查询内容返回内容数组。
 func QueryContentsByDeviceName(deviceName string) []Content {
 	temp := make([]Content, 0)
 	for _, content := range contents {
@@ -70,11 +58,7 @@ func QueryContentsByDeviceName(deviceName string) []Content {
 	return temp
 }
 
-// DeleteContent @title 删除内容。
-// @description 根据id和设备名删除设备。删除成功就返回true否则就返回false。
-// @param id string 内容id。
-// @param deviceName string 设备名。
-// @return bool 返回删除状态。
+// DeleteContent 根据id和设备名删除设备。删除成功就返回true否则就返回false。
 func DeleteContent(id string, deviceName string) bool {
 	deleteIndex := -1
 	for index, content := range contents {
@@ -93,10 +77,7 @@ func DeleteContent(id string, deviceName string) bool {
 	return false
 }
 
-// UpdateContent @title 更新内容
-// @description 更新内容。
-// @param content Content 更新的设备信息。
-// @return bool 如果更新成功就返回true否则返回false
+// UpdateContent 更新内容
 func UpdateContent(content Content) bool {
 	for index, oldContent := range contents {
 		if oldContent.Id == content.Id {
