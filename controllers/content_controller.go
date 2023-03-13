@@ -2,21 +2,25 @@ package controllers
 
 import (
 	model "contentShareManage/models"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"sort"
 	"strconv"
 	"time"
 )
 
 func ContentIndex(context *gin.Context) {
-	var contents []model.Content = nil
+	var contents []model.ContentWithDevice = nil
 	deviceName, exists := context.GetQuery("deviceName")
 	if exists {
 		contents = model.QueryContentsByDeviceName(deviceName)
 	} else {
 		contents = model.GetContents()
 	}
+
+	sort.Slice(contents, func(i, j int) bool {
+		return contents[i].UpdateDate > contents[j].UpdateDate
+	})
 
 	startString, exists := context.GetQuery("start")
 	endString, exists := context.GetQuery("end")
@@ -53,12 +57,12 @@ func ContentStore(context *gin.Context) {
 	}
 	content.DeviceName = deviceName.(string)
 	content.CreateDate = time.Now().UnixMilli()
+	content.UpdateDate = time.Now().UnixMilli()
 	model.AddContent(content)
 	context.JSON(http.StatusOK, content)
 }
 
 func ContentShow(context *gin.Context) {
-	fmt.Println(context.Param("id"))
 	content := model.QueryContentById(context.Param("id"))
 	if content == nil {
 		context.String(http.StatusNotFound, "找不到内容！")
@@ -78,9 +82,11 @@ func ContentUpdate(context *gin.Context) {
 	content := tempContent.(model.Content)
 	newContent := model.Content{}
 	context.BindJSON(&newContent)
-	newContent.Id = content.Id
-	newContent.DeviceName = content.DeviceName
-	model.UpdateContent(newContent)
+
+	content.Type = newContent.Type
+	content.Text = newContent.Text
+	content.UpdateDate = time.Now().UnixMilli()
+	model.UpdateContent(content)
 	context.String(http.StatusOK, "更新成功！")
 }
 
