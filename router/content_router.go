@@ -70,8 +70,8 @@ func InitContentRouter(r *gin.Engine) {
 	{
 		contentGroup.GET("/", controller.ContentIndex)
 		contentGroup.POST("/", controller.ContentStore)
-		contentGroup.GET("/:id", controller.ContentShow)
-		contentGroup.PUT("/:id", controller.ContentUpdate)
-		contentGroup.DELETE("/:id", controller.ContentDestroy)
+		contentGroup.GET("/:id/", controller.ContentShow)
+		contentGroup.PUT("/:id/", controller.ContentUpdate)
+		contentGroup.DELETE("/:id/", controller.ContentDestroy)
 	}
 }
