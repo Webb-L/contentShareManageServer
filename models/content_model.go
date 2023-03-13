@@ -17,11 +17,29 @@ type Content struct {
 	Type       int    // 内容类型（文本、HTML、JSON、XML...）
 	Text       string // 内容
 	CreateDate int64  // 创建时间
+	UpdateDate int64  // 更新时间
+}
+
+func (receiver Content) toContentWithDevice() ContentWithDevice {
+	return ContentWithDevice{
+		receiver,
+		QueryDeviceTypeByDeviceName(receiver.DeviceName),
+	}
+}
+
+type ContentWithDevice struct {
+	Content        // 内容
+	DeviceType int // 设备类型
 }
 
 // GetContents 获取所有设备。
-func GetContents() []Content {
-	return contents
+func GetContents() []ContentWithDevice {
+	tempContent := make([]ContentWithDevice, 0)
+	for _, content := range contents {
+		contentWithDevice := content.toContentWithDevice()
+		tempContent = append(tempContent, contentWithDevice)
+	}
+	return tempContent
 }
 
 // AddContent 如果有新内容加入就添加到contents中。
@@ -39,7 +57,6 @@ func BuildId() string {
 // QueryContentById 根据id查询内容，如果查询成功就返回内容否则就返回空。
 func QueryContentById(id string) any {
 	for _, content := range contents {
-		fmt.Println(content.Id, id, content.Id == id)
 		if content.Id == id {
 			return content
 		}
@@ -48,14 +65,14 @@ func QueryContentById(id string) any {
 }
 
 // QueryContentsByDeviceName 根据设备名查询内容返回内容数组。
-func QueryContentsByDeviceName(deviceName string) []Content {
-	temp := make([]Content, 0)
+func QueryContentsByDeviceName(deviceName string) []ContentWithDevice {
+	tempContents := make([]ContentWithDevice, 0)
 	for _, content := range contents {
 		if content.DeviceName == deviceName {
-			temp = append(temp, content)
+			tempContents = append(tempContents, content.toContentWithDevice())
 		}
 	}
-	return temp
+	return tempContents
 }
 
 // DeleteContent 根据id和设备名删除设备。删除成功就返回true否则就返回false。
@@ -71,6 +88,7 @@ func DeleteContent(id string, deviceName string) bool {
 	if deleteIndex != -1 {
 		temp = append(temp, contents[:deleteIndex]...)
 		temp = append(temp, contents[deleteIndex+1:]...)
+		contents = temp
 		return true
 	}
 
