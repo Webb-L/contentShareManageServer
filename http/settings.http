@@ -1,3 +1,4 @@
+# 获取连接密码
 GET http://{{hostname}}/settings/password
 Accept: application/json
 
