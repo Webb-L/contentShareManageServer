@@ -17,7 +17,7 @@ func InitDeviceRouter(r *gin.Engine) {
 			return
 		}
 
-		if context.Request.Method != "GET" && context.Request.Method != "POST" {
+		if context.Request.Method != "POST" {
 			// 检测Token 是否有效。
 			token := context.GetHeader("Token")
 			if token == "" {
@@ -43,31 +43,33 @@ func InitDeviceRouter(r *gin.Engine) {
 				return
 			}
 
-			// 查询被操作的设备
-			name := context.Param("name")
-			if name == "" {
-				context.String(http.StatusNotFound, "找不到设备！")
-				context.Abort()
-				context.Next()
-				return
-			}
+			if context.Request.Method != "GET" {
+				// 查询被操作的设备
+				name := context.Param("name")
+				if name == "" {
+					context.String(http.StatusNotFound, "找不到设备！")
+					context.Abort()
+					context.Next()
+					return
+				}
 
-			queryDevice := model.QueryDevice(name)
-			if queryDevice == nil {
-				context.String(http.StatusNotFound, "找不到设备！")
-				context.Abort()
-				context.Next()
-				return
-			}
+				queryDevice := model.QueryDevice(name)
+				if queryDevice == nil {
+					context.String(http.StatusNotFound, "找不到设备！")
+					context.Abort()
+					context.Next()
+					return
+				}
 
-			context.Set("device", queryDevice.(model.Device))
+				context.Set("device", queryDevice.(model.Device))
+			}
 		}
 	})
 	{
 		deviceGroup.GET("/", controller.DeviceIndex)
 		deviceGroup.POST("/", controller.DeviceStore)
-		deviceGroup.GET("/:name", controller.DeviceShow)
-		deviceGroup.PUT("/:name", controller.DeviceUpdate)
-		deviceGroup.DELETE("/:name", controller.DeviceDestroy)
+		deviceGroup.GET("/:name/", controller.DeviceShow)
+		deviceGroup.PUT("/:name/", controller.DeviceUpdate)
+		deviceGroup.DELETE("/:name/", controller.DeviceDestroy)
 	}
 }
