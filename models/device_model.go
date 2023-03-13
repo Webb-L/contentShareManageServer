@@ -39,7 +39,6 @@ func AddDevice(device Device) int {
 // QueryDevice 根据deviceName查询设备是否存在。如果存在就返回设备信息否则就返回空。
 func QueryDevice(deviceName string) interface{} {
 	for _, device := range devices {
-		fmt.Println(device.Name, deviceName)
 		if device.Name == deviceName {
 			return device
 		}
@@ -101,4 +100,14 @@ func QueryDeviceByToken(token string) interface{} {
 		}
 	}
 	return nil
+}
+
+// QueryDeviceTypeByDeviceName 根据设备名称查询设备类型。
+func QueryDeviceTypeByDeviceName(name string) int {
+	for _, device := range devices {
+		if device.Name == name {
+			return device.Type
+		}
+	}
+	return -1
 }
