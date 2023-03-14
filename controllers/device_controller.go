@@ -108,6 +108,9 @@ func DeviceDestroy(context *gin.Context) {
 	}
 
 	device := tempDevice.(model.Device)
+	if device.IsAdmin {
+		context.String(http.StatusAccepted, "管理员账户不能删除！")
+	}
 	if model.DeleteDevice(device.Name) {
 		context.String(http.StatusOK, "删除成功！")
 	} else {
