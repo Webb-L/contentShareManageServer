@@ -46,6 +46,16 @@ func QueryDevice(deviceName string) interface{} {
 	return nil
 }
 
+// QueryDeviceByTokenType 根据token和type查询设备是否存在。如果存在就返回设备信息否则就返回空。
+func QueryDeviceByTokenType(token string, deviceType int) interface{} {
+	for _, device := range devices {
+		if device.Token == token && device.Type == deviceType {
+			return device
+		}
+	}
+	return nil
+}
+
 // DeleteDevice 根据设备名称和设备密码删除设备。删除成功就返回true否则就返回false。
 func DeleteDevice(name string) bool {
 	deleteIndex := -1

@@ -1,0 +1,14 @@
+GET http://{{hostname}}/webhook/{{webhook}}/?type=1&text=GET
+Accept: application/json
+
+###
+
+POST http://{{hostname}}/webhook/{{webhook}}/
+Content-Type: application/json
+
+{
+  "type": 1,
+  "text": "POST"
+}
+
+###
