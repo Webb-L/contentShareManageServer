@@ -59,17 +59,17 @@ func ContentStore(context *gin.Context) {
 	content.CreateDate = time.Now().UnixMilli()
 	content.UpdateDate = time.Now().UnixMilli()
 	model.AddContent(content)
-	context.JSON(http.StatusOK, content)
+	context.JSON(http.StatusOK, content.ToContentWithDevice())
 }
 
 func ContentShow(context *gin.Context) {
-	content := model.QueryContentById(context.Param("id"))
-	if content == nil {
+	_content := model.QueryContentById(context.Param("id"))
+	if _content == nil {
 		context.String(http.StatusNotFound, "找不到内容！")
 		return
 	}
-
-	context.JSON(http.StatusOK, content)
+	content := _content.(model.Content)
+	context.JSON(http.StatusOK, content.ToContentWithDevice())
 }
 
 func ContentUpdate(context *gin.Context) {
@@ -78,7 +78,11 @@ func ContentUpdate(context *gin.Context) {
 		context.String(http.StatusNotFound, "找不到内容！")
 		return
 	}
-
+	deviceName, exists := context.Get("deviceName")
+	if !exists {
+		context.String(http.StatusBadRequest, "找不到设备！")
+		return
+	}
 	content := tempContent.(model.Content)
 	newContent := model.Content{}
 	context.BindJSON(&newContent)
@@ -86,8 +90,11 @@ func ContentUpdate(context *gin.Context) {
 	content.Type = newContent.Type
 	content.Text = newContent.Text
 	content.UpdateDate = time.Now().UnixMilli()
-	model.UpdateContent(content)
-	context.String(http.StatusOK, "更新成功！")
+	if model.UpdateContent(content, deviceName.(string)) {
+		context.String(http.StatusOK, "更新成功！")
+	} else {
+		context.String(http.StatusOK, "更新失败！")
+	}
 }
 
 func ContentDestroy(context *gin.Context) {

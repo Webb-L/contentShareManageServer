@@ -20,7 +20,8 @@ type Content struct {
 	UpdateDate int64  // 更新时间
 }
 
-func (receiver Content) toContentWithDevice() ContentWithDevice {
+// ToContentWithDevice 将Content转ContentWithDevice
+func (receiver Content) ToContentWithDevice() ContentWithDevice {
 	return ContentWithDevice{
 		receiver,
 		QueryDeviceTypeByDeviceName(receiver.DeviceName),
@@ -36,7 +37,7 @@ type ContentWithDevice struct {
 func GetContents() []ContentWithDevice {
 	tempContent := make([]ContentWithDevice, 0)
 	for _, content := range contents {
-		contentWithDevice := content.toContentWithDevice()
+		contentWithDevice := content.ToContentWithDevice()
 		tempContent = append(tempContent, contentWithDevice)
 	}
 	return tempContent
@@ -69,7 +70,7 @@ func QueryContentsByDeviceName(deviceName string) []ContentWithDevice {
 	tempContents := make([]ContentWithDevice, 0)
 	for _, content := range contents {
 		if content.DeviceName == deviceName {
-			tempContents = append(tempContents, content.toContentWithDevice())
+			tempContents = append(tempContents, content.ToContentWithDevice())
 		}
 	}
 	return tempContents
@@ -78,8 +79,13 @@ func QueryContentsByDeviceName(deviceName string) []ContentWithDevice {
 // DeleteContent 根据id和设备名删除设备。删除成功就返回true否则就返回false。
 func DeleteContent(id string, deviceName string) bool {
 	deleteIndex := -1
+	_device := QueryDevice(deviceName)
+	if _device == nil {
+		return false
+	}
+	device := _device.(Device)
 	for index, content := range contents {
-		if content.Id == id && content.DeviceName == deviceName {
+		if content.Id == id && (device.IsAdmin || content.DeviceName == device.Name) {
 			deleteIndex = index
 		}
 	}
@@ -96,9 +102,14 @@ func DeleteContent(id string, deviceName string) bool {
 }
 
 // UpdateContent 更新内容
-func UpdateContent(content Content) bool {
+func UpdateContent(content Content, deviceName string) bool {
+	_device := QueryDevice(deviceName)
+	if _device == nil {
+		return false
+	}
+	device := _device.(Device)
 	for index, oldContent := range contents {
-		if oldContent.Id == content.Id {
+		if oldContent.Id == content.Id && (device.IsAdmin || content.DeviceName == device.Name) {
 			contents[index] = content
 			return true
 		}
