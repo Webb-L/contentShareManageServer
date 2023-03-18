@@ -36,7 +36,8 @@ func ContentIndex(context *gin.Context) {
 	}
 
 	if start > len(contents) {
-		start = 0
+		context.JSON(http.StatusOK, make([]model.ContentWithDevice, 0))
+		return
 	}
 
 	if end > len(contents) {

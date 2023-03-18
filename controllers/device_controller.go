@@ -31,7 +31,8 @@ func DeviceIndex(context *gin.Context) {
 	}
 
 	if start > len(devices) {
-		start = 0
+		context.JSON(http.StatusOK, make([]model.Device, 0))
+		return
 	}
 
 	if end > len(devices) {
