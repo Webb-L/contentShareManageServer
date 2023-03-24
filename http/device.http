@@ -1,13 +1,13 @@
 # 获取所有设备
 GET http://{{hostname}}/device/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Accept: application/json
 
 ###
 
 # 根据范围获取所有设备
 GET http://{{hostname}}/device/?start=0&end=10&password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Accept: application/json
 
 ###
@@ -18,7 +18,6 @@ Content-Type: application/json
 
 {
   "name": "安卓",
-  "password": "123456",
   "type": 1
 }
 
@@ -30,7 +29,6 @@ Content-Type: application/json
 
 {
   "name": "安卓1",
-  "password": "654321",
   "type": 2
 }
 
@@ -42,7 +40,6 @@ Content-Type: application/json
 
 {
   "name": "安卓",
-  "password": "123456",
   "type": 1
 }
 
@@ -50,33 +47,33 @@ Content-Type: application/json
 
 # 查询存在设备
 GET http://{{hostname}}/device/安卓/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Accept: application/json
 
 ###
 # 查询不存在设备
 GET http://{{hostname}}/device/安卓0/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Accept: application/json
 
 ###
 
 # 删除存在设备
 DELETE http://{{hostname}}/device/安卓1/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Content-Type: application/json
 
 ###
 # 删除不存在设备
 DELETE http://{{hostname}}/device/安卓0/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Content-Type: application/json
 
 ###
 
 # 更新存在设备
 PUT http://{{hostname}}/device/安卓1/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Content-Type: application/json
 
 {
@@ -90,7 +87,7 @@ Content-Type: application/json
 
 # 更新不存在设备
 PUT http://{{hostname}}/device/安卓0/?password={{password}}
-Token: {{token}}
+Authorization: {{token}}
 Content-Type: application/json
 
 {

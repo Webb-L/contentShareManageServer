@@ -10,7 +10,7 @@ import (
 func InitDeviceRouter(r *gin.Engine) {
 	deviceGroup := r.Group("/device", func(context *gin.Context) {
 		queryPassword, exists := context.GetQuery("password")
-		if password == "" || !exists || queryPassword != password {
+		if controller.Password == "" || !exists || queryPassword != controller.Password {
 			context.String(http.StatusUnauthorized, "密码错误！")
 			context.Abort()
 			context.Next()
@@ -19,16 +19,16 @@ func InitDeviceRouter(r *gin.Engine) {
 
 		if context.Request.Method != "POST" {
 			// 检测Token 是否有效。
-			token := context.GetHeader("Token")
+			token := context.GetHeader("Authorization")
 			if token == "" {
-				context.String(http.StatusUnauthorized, "您没有权限操作！")
+				context.String(http.StatusForbidden, "您没有权限操作！")
 				context.Abort()
 				context.Next()
 				return
 			}
 			temp := model.QueryDeviceByToken(token)
 			if temp == nil {
-				context.String(http.StatusUnauthorized, "您没有权限操作！")
+				context.String(http.StatusForbidden, "您没有权限操作！")
 				context.Abort()
 				context.Next()
 				return

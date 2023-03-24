@@ -7,8 +7,21 @@ import (
 	"strconv"
 )
 
-// DeviceIndex @title 查询设备
-// @description 查询当前有多少设备
+// DeviceIndex 获取所有设备
+//
+//	@Summary		显示设备信息
+//	@Description	根据数据开始索引和结束索引查询数据.
+//	@Tags			device
+//	@Accept			json
+//	@Produce		json
+//	@Param			password	query		string	true	"连接服务器密码"
+//	@Param			start		query		int		false	"设备数据开始索引"
+//	@Param			end			query		int		false	"设备数据结束索引"
+//	@Success		200			{object}	models.Device
+//	@Failure		401			string		string	"密码错误！"
+//	@Failure		403			string		string	"您没有权限操作！"
+//	@Failure		404			string		string	"找不到设备！"
+//	@Router			/device/ [get]
 func DeviceIndex(context *gin.Context) {
 	devices := model.GetDevices()
 	startString, exists := context.GetQuery("start")
@@ -48,9 +61,19 @@ func DeviceIndex(context *gin.Context) {
 	context.JSON(http.StatusOK, resultDevice)
 }
 
-// DeviceStore @title 新增设备
-// @description 保存新的设备。如果是第一台设备连接设置为管理员。
-// @param context *gin.Context
+// DeviceStore 新增设备
+//
+//	@Summary		新增设备
+//	@Description	新增设备,默认只有发送权限.
+//	@Tags			device
+//	@Accept			json
+//	@Produce		json
+//	@Param			password	query		string			true	"连接服务器密码"
+//	@Param			device		body		models.Device	true	"新设备信息"
+//	@Success		200			{object}	models.Device
+//	@Success		202			string		string	"设备已存在！"
+//	@Failure		401			string		string	"密码错误！"
+//	@Router			/device/ [post]
 func DeviceStore(context *gin.Context) {
 	device := model.Device{}
 	context.BindJSON(&device)
@@ -67,8 +90,20 @@ func DeviceStore(context *gin.Context) {
 	context.JSON(http.StatusOK, device)
 }
 
-// DeviceShow @title 查询设备信息
-// @description 显示设备名称。
+// DeviceShow 查询某台设备
+//
+//	@Summary		显示设备信息
+//	@Description	返回某台设备信息
+//	@Tags			device
+//	@Accept			json
+//	@Produce		json
+//	@Param			password	query		string	true	"连接服务器密码"
+//	@Param			name		path		string	true	"设备名"
+//	@Success		200			{object}	models.Device
+//	@Failure		401			string		string	"密码错误！"
+//	@Failure		403			string		string	"您没有权限操作！"
+//	@Failure		404			string		string	"找不到设备！"
+//	@Router			/device/:name/ [get]
 func DeviceShow(context *gin.Context) {
 	tempDevice := model.QueryDevice(context.Param("name"))
 	if tempDevice == nil {
@@ -80,8 +115,21 @@ func DeviceShow(context *gin.Context) {
 	context.JSON(http.StatusOK, device)
 }
 
-// DeviceUpdate @title 更新设备
-// @description 更新设备信息。
+// DeviceUpdate 更新设备
+//
+//	@Summary		更新设备
+//	@Description	更新设备名称更新设备
+//	@Tags			device
+//	@Accept			json
+//	@Produce		json
+//	@Param			password	query	string			true	"连接服务器密码"
+//	@Param			name		path	string			true	"设备名"
+//	@Param			device		body	models.Device	true	"更新设备信息"
+//	@Success		200			string	string			"更新成功！"
+//	@Failure		401			string	string			"密码错误！"
+//	@Failure		403			string	string			"您没有权限操作！"
+//	@Failure		404			string	string			"找不到设备！"
+//	@Router			/device/:name/ [put]
 func DeviceUpdate(context *gin.Context) {
 	tempDevice, exists := context.Get("device")
 	if !exists {
@@ -99,8 +147,21 @@ func DeviceUpdate(context *gin.Context) {
 	context.String(http.StatusOK, "更新成功！")
 }
 
-// DeviceDestroy @title 删除设备
-// @description 删除设备。
+// DeviceDestroy 删除设备
+//
+//	@Summary		删除设备
+//	@Description	根据设备名称删除设备
+//	@Tags			device
+//	@Accept			json
+//	@Produce		json
+//	@Param			password	query	string	true	"连接服务器密码"
+//	@Param			name		path	string	true	"设备名"
+//	@Success		200			string	string	"更新成功！"
+//	@Success		202			string	string	"管理员账户不能删除！"
+//	@Failure		401			string	string	"密码错误！"
+//	@Failure		403			string	string	"您没有权限操作！"
+//	@Failure		404			string	string	"找不到设备！"
+//	@Router			/device/:name/ [delete]
 func DeviceDestroy(context *gin.Context) {
 	tempDevice, exists := context.Get("device")
 	if !exists {

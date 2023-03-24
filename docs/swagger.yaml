@@ -1,0 +1,586 @@
+basePath: /
+definitions:
+  models.Content:
+    properties:
+      createDate:
+        description: 创建时间
+        type: integer
+      deviceName:
+        description: 设备名称
+        type: string
+      id:
+        description: 内容id
+        type: string
+      text:
+        description: 内容
+        type: string
+      type:
+        description: 内容类型（文本、HTML、JSON、XML...）
+        type: integer
+      updateDate:
+        description: 更新时间
+        type: integer
+    type: object
+  models.ContentWithDevice:
+    properties:
+      createDate:
+        description: 创建时间
+        type: integer
+      deviceName:
+        description: 设备名称
+        type: string
+      deviceType:
+        description: 设备类型
+        type: integer
+      id:
+        description: 内容id
+        type: string
+      text:
+        description: 内容
+        type: string
+      type:
+        description: 内容类型（文本、HTML、JSON、XML...）
+        type: integer
+      updateDate:
+        description: 更新时间
+        type: integer
+    type: object
+  models.Device:
+    properties:
+      isAdmin:
+        description: 是否是管理员
+        type: boolean
+      isRead:
+        description: 是否可以查看
+        type: boolean
+      isSend:
+        description: 是否可以发送
+        type: boolean
+      name:
+        description: 设备名称
+        type: string
+      token:
+        description: Token
+        type: string
+      type:
+        description: 设备类型（Android、IOS、PC）
+        type: integer
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: 通过访问Api将数据保存在内存中。
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: ContentShareManage Api
+  version: "1.0"
+paths:
+  /content/:
+    get:
+      consumes:
+      - application/json
+      description: 根据数据开始索引和结束索引查询数据.
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 设备名
+        in: query
+        name: deviceName
+        type: string
+      - description: 内容数据开始索引
+        in: query
+        name: start
+        type: integer
+      - description: 内容数据结束索引
+        in: query
+        name: end
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ContentWithDevice'
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到内容！
+          schema:
+            type: string
+      summary: 显示内容信息
+      tags:
+      - content
+    post:
+      consumes:
+      - application/json
+      description: 新增内容
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 新设备信息
+        in: body
+        name: content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Content'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ContentWithDevice'
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+      summary: 新增内容
+      tags:
+      - content
+  /content/:id/:
+    get:
+      consumes:
+      - application/json
+      description: 返回某条内容信息
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 内容id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ContentWithDevice'
+        "400":
+          description: 找不到内容！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+      summary: 显示内容信息
+      tags:
+      - content
+  /device/:
+    get:
+      consumes:
+      - application/json
+      description: 根据数据开始索引和结束索引查询数据.
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 设备数据开始索引
+        in: query
+        name: start
+        type: integer
+      - description: 设备数据结束索引
+        in: query
+        name: end
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Device'
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 显示设备信息
+      tags:
+      - device
+    post:
+      consumes:
+      - application/json
+      description: 新增设备,默认只有发送权限.
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 新设备信息
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/models.Device'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Device'
+        "202":
+          description: 设备已存在！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+      summary: 新增设备
+      tags:
+      - device
+  /device/:id/:
+    delete:
+      consumes:
+      - application/json
+      description: 根据内容名称删除内容
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 内容id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功！
+          schema:
+            type: string
+        "202":
+          description: 删除失败！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 删除内容
+      tags:
+      - content
+    put:
+      consumes:
+      - application/json
+      description: 更新某条内容
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 内容id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 更新内容信息
+        in: body
+        name: content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Content'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功！
+          schema:
+            type: string
+        "202":
+          description: 更新失败！
+          schema:
+            type: string
+        "400":
+          description: 找不到内容！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+      summary: 更新内容
+      tags:
+      - content
+  /device/:name/:
+    delete:
+      consumes:
+      - application/json
+      description: 根据设备名称删除设备
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 设备名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功！
+          schema:
+            type: string
+        "202":
+          description: 管理员账户不能删除！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 删除设备
+      tags:
+      - device
+    get:
+      consumes:
+      - application/json
+      description: 返回某台设备信息
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 设备名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Device'
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 显示设备信息
+      tags:
+      - device
+    put:
+      consumes:
+      - application/json
+      description: 更新设备名称更新设备
+      parameters:
+      - description: 连接服务器密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 设备名
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 更新设备信息
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/models.Device'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功！
+          schema:
+            type: string
+        "401":
+          description: 密码错误！
+          schema:
+            type: string
+        "403":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 更新设备
+      tags:
+      - device
+  /settings/password/:
+    get:
+      consumes:
+      - text/plain
+      description: 获取服务器密码，如果服务器密码已经获取就返回错误“密码已获取。如果忘记密码请重启服务端。”
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: 32位随机字符串
+          schema:
+            type: string
+        "403":
+          description: 密码已获取。如果忘记密码请重启服务端。
+          schema:
+            type: string
+      summary: 获取服务器密码
+      tags:
+      - setting
+  /webhook/:token/:
+    get:
+      consumes:
+      - application/json
+      description: 使用GET方式 新增内容
+      parameters:
+      - description: WebHook凭证
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: 内容类型
+        in: query
+        name: type
+        required: true
+        type: integer
+      - description: 发送的内容
+        in: query
+        name: text
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Content'
+        "400":
+          description: 请设置内容！
+          schema:
+            type: string
+        "401":
+          description: 您没有权限操作！
+          schema:
+            type: string
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 新增内容
+      tags:
+      - webhook
+    post:
+      consumes:
+      - application/json
+      description: 使用POST方式 新增内容
+      parameters:
+      - description: WebHook凭证
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: 新内容信息
+        in: body
+        name: content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Content'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Content'
+        "404":
+          description: 找不到设备！
+          schema:
+            type: string
+      summary: 新增内容
+      tags:
+      - webhook
+schemes:
+- http
+- https
+securityDefinitions:
+  "":
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

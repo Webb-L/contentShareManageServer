@@ -1,0 +1,868 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "通过访问Api将数据保存在内存中。",
+        "title": "ContentShareManage Api",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/content/": {
+            "get": {
+                "description": "根据数据开始索引和结束索引查询数据.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "content"
+                ],
+                "summary": "显示内容信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备名",
+                        "name": "deviceName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "内容数据开始索引",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "内容数据结束索引",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentWithDevice"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到内容！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "content"
+                ],
+                "summary": "新增内容",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "新设备信息",
+                        "name": "content",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentWithDevice"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/content/:id/": {
+            "get": {
+                "description": "返回某条内容信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "content"
+                ],
+                "summary": "显示内容信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "内容id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentWithDevice"
+                        }
+                    },
+                    "400": {
+                        "description": "找不到内容！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/": {
+            "get": {
+                "description": "根据数据开始索引和结束索引查询数据.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "显示设备信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "设备数据开始索引",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "设备数据结束索引",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Device"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增设备,默认只有发送权限.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "新增设备",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "新设备信息",
+                        "name": "device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Device"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Device"
+                        }
+                    },
+                    "202": {
+                        "description": "设备已存在！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/:id/": {
+            "put": {
+                "description": "更新某条内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "content"
+                ],
+                "summary": "更新内容",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "内容id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新内容信息",
+                        "name": "content",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新成功！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "202": {
+                        "description": "更新失败！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "找不到内容！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "根据内容名称删除内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "content"
+                ],
+                "summary": "删除内容",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "内容id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除成功！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "202": {
+                        "description": "删除失败！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/:name/": {
+            "get": {
+                "description": "返回某台设备信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "显示设备信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Device"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "更新设备名称更新设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "更新设备",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "更新设备信息",
+                        "name": "device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Device"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新成功！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "根据设备名称删除设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "删除设备",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "连接服务器密码",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新成功！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "202": {
+                        "description": "管理员账户不能删除！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "密码错误！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/settings/password/": {
+            "get": {
+                "description": "获取服务器密码，如果服务器密码已经获取就返回错误“密码已获取。如果忘记密码请重启服务端。”",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "setting"
+                ],
+                "summary": "获取服务器密码",
+                "responses": {
+                    "200": {
+                        "description": "32位随机字符串",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "密码已获取。如果忘记密码请重启服务端。",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/webhook/:token/": {
+            "get": {
+                "description": "使用GET方式 新增内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "webhook"
+                ],
+                "summary": "新增内容",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "WebHook凭证",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "内容类型",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "发送的内容",
+                        "name": "text",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Content"
+                        }
+                    },
+                    "400": {
+                        "description": "请设置内容！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "您没有权限操作！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "使用POST方式 新增内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "webhook"
+                ],
+                "summary": "新增内容",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "WebHook凭证",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "新内容信息",
+                        "name": "content",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Content"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到设备！",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Content": {
+            "type": "object",
+            "properties": {
+                "createDate": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "deviceName": {
+                    "description": "设备名称",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "内容id",
+                    "type": "string"
+                },
+                "text": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "内容类型（文本、HTML、JSON、XML...）",
+                    "type": "integer"
+                },
+                "updateDate": {
+                    "description": "更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ContentWithDevice": {
+            "type": "object",
+            "properties": {
+                "createDate": {
+                    "description": "创建时间",
+                    "type": "integer"
+                },
+                "deviceName": {
+                    "description": "设备名称",
+                    "type": "string"
+                },
+                "deviceType": {
+                    "description": "设备类型",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "内容id",
+                    "type": "string"
+                },
+                "text": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "内容类型（文本、HTML、JSON、XML...）",
+                    "type": "integer"
+                },
+                "updateDate": {
+                    "description": "更新时间",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Device": {
+            "type": "object",
+            "properties": {
+                "isAdmin": {
+                    "description": "是否是管理员",
+                    "type": "boolean"
+                },
+                "isRead": {
+                    "description": "是否可以查看",
+                    "type": "boolean"
+                },
+                "isSend": {
+                    "description": "是否可以发送",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "设备名称",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "Token",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "设备类型（Android、IOS、PC）",
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

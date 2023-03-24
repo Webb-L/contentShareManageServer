@@ -8,10 +8,27 @@ import (
 	"time"
 )
 
+// SendContentGet 新增内容
+//
+//	@Summary		新增内容
+//	@Description	使用GET方式 新增内容
+//	@Tags			webhook
+//	@Accept			json
+//	@Produce		json
+//	@Param			token	path		string	true	"WebHook凭证"
+//	@Param			type	query		int		true	"内容类型"
+//	@Param			text	query		string	true	"发送的内容"
+//	@Success		200		{object}	models.Content
+//	@Failure		400		string		string	"请设置类型！"
+//	@Failure		400		string		string	"请输入正确的类型！"
+//	@Failure		400		string		string	"请设置内容！"
+//	@Failure		401		string		string	"您没有权限操作！"
+//	@Failure		404		string		string	"找不到设备！"
+//	@Router			/webhook/:token/ [get]
 func SendContentGet(context *gin.Context) {
 	deviceName, exists := context.Get("deviceName")
 	if !exists {
-		context.String(http.StatusBadRequest, "找不到设备！")
+		context.String(http.StatusNotFound, "找不到设备！")
 		return
 	}
 
@@ -44,10 +61,23 @@ func SendContentGet(context *gin.Context) {
 	model.AddContent(content)
 	context.JSON(http.StatusOK, content)
 }
+
+// SendContentPost 新增内容
+//
+//	@Summary		新增内容
+//	@Description	使用POST方式 新增内容
+//	@Tags			webhook
+//	@Accept			json
+//	@Produce		json
+//	@Param			token	path		string			true	"WebHook凭证"
+//	@Param			content	body		models.Content	true	"新内容信息"
+//	@Success		200		{object}	models.Content
+//	@Failure		404		string		string	"找不到设备！"
+//	@Router			/webhook/:token/ [post]
 func SendContentPost(context *gin.Context) {
 	deviceName, exists := context.Get("deviceName")
 	if !exists {
-		context.String(http.StatusBadRequest, "找不到设备！")
+		context.String(http.StatusNotFound, "找不到设备！")
 		return
 	}
 	content := model.Content{}
