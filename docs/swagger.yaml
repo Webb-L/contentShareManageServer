@@ -501,7 +501,7 @@ paths:
             type: string
       summary: 获取服务器密码
       tags:
-      - setting
+      - settings
   /webhook/:token/:
     get:
       consumes:

@@ -22,7 +22,7 @@ func init() {
 //
 //	@Summary		获取服务器密码
 //	@Description	获取服务器密码，如果服务器密码已经获取就返回错误“密码已获取。如果忘记密码请重启服务端。”
-//	@Tags			setting
+//	@Tags			settings
 //	@Accept			plain
 //	@Produce		plain
 //	@Success		200	string	string	"32位随机字符串"

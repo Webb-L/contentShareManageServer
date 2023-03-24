@@ -638,7 +638,7 @@ const docTemplate = `{
                     "text/plain"
                 ],
                 "tags": [
-                    "setting"
+                    "settings"
                 ],
                 "summary": "获取服务器密码",
                 "responses": {

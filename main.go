@@ -2,8 +2,11 @@ package main
 
 import (
 	controller "contentShareManage/controllers"
+	_ "contentShareManage/docs"
 	router "contentShareManage/router"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"os"
 	"strconv"
 )
@@ -39,5 +42,6 @@ func main() {
 	}
 	r := gin.Default()
 	router.RegisterRouter(r)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8000")
 }
