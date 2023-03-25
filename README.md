@@ -22,11 +22,112 @@
 
 安装和使用内容共享管理服务端非常简单：
 
-1. 下载并安装内容共享管理服务端。
+1. 下载编译好的版本
+   
+2. 自行编译
 
-2. 启动服务端，通过API接口进行配置。
+3. docker
 
-3. 使用API接口添加、发布和管理内容。
+4. docker-compose 
+
+### 下载编译好的版本
+
+打开[releases](https://github.com/Webb-L/contentShareManageServer/releases)页面找到您需要的版本。下载成功后启动应用。
+
+```bash
+./contentShareManage 
+
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+...
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8000
+```
+
+### 自行编译
+
++ 编译
+
+```bash
+go build
+```
+
++ 启动
+
+```bash
+./contentShareManage 
+
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+...
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8000
+```
+
+### docker
+
++ 编译docker镜像
+
+```bash
+docker build --tag content_share_manage .
+
+Sending build context to Docker daemon  32.61MB
+...
+Successfully built acc6b1892ba0
+Successfully tagged content_share_manage:latest
+```
+
++ 运行docker镜像
+
+```bash
+docker run -d -p 8000:8000 --name content_share_manage content_share_manage
+
+7de1d517bc0258de75229ef5c83e6cd2853be0374139d7db139f20e1cf464150
+```
+
++ 检测是运行成功
+
+```bash
+docker ps
+
+CONTAINER ID   IMAGE                  COMMAND   CREATED              STATUS          PORTS                                       NAMES
+7de1d517bc02   content_share_manage   "app"     About a minute ago   Up 59 seconds   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   content_share_manage
+```
+
+### docker-compose
+
++ 编译和启动镜像
+
+```bash
+docker-compose up -d 
+
+Building web
+Step 1/10 : FROM golang:1.20
+...
+Removing intermediate container 4fb706158ef6
+ ---> 84c5662b8fb1
+
+Successfully built 84c5662b8fb1
+Successfully tagged contentsharemanage_web:latest
+Creating contentShareMange ... done
+```
+
++ 检测是运行成功
+
+```bash
+docker ps
+
+CONTAINER ID   IMAGE                    COMMAND   CREATED         STATUS         PORTS                                       NAMES
+00592f236094   contentsharemanage_web   "app"     2 minutes ago   Up 2 minutes   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   contentShareMange
+```
 
 更详细的安装和使用说明，请参阅项目文档。
 
